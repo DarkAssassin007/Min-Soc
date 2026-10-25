@@ -1,0 +1,288 @@
+{
+  "models": [
+    {
+      "name": "baseline_isolation_forest",
+      "version": "v1-20261003",
+      "algorithm": "isolation_forest",
+      "threshold": -0.5550371387678034,
+      "feature_order": [
+        "connection_count",
+        "unique_destination_ports",
+        "unique_destination_ips",
+        "failed_connections",
+        "dns_requests",
+        "unique_dns_queries",
+        "auth_failures",
+        "bytes_total",
+        "packets_total",
+        "bytes_per_second",
+        "packets_per_second",
+        "avg_connection_duration_ms",
+        "unique_protocols",
+        "events_per_minute"
+      ],
+      "metrics": {
+        "threshold": -0.5550371387678034,
+        "samples": 790,
+        "confusion": {
+          "tp": 265,
+          "fp": 16,
+          "tn": 509,
+          "fn": 0
+        },
+        "precision": 0.9431,
+        "recall": 1.0,
+        "f1_score": 0.9707,
+        "false_positive_rate": 0.0305,
+        "false_negative_rate": 0.0,
+        "specificity": 0.9695,
+        "roc_auc": 1.0,
+        "score_mean_normal": -0.48018,
+        "score_mean_anomaly": -0.6512,
+        "latency": {
+          "mean_ms": 12.5917,
+          "p95_ms": 18.3847,
+          "max_ms": 24.8809,
+          "samples": 200
+        },
+        "feature_order": [
+          "connection_count",
+          "unique_destination_ports",
+          "unique_destination_ips",
+          "failed_connections",
+          "dns_requests",
+          "unique_dns_queries",
+          "auth_failures",
+          "bytes_total",
+          "packets_total",
+          "bytes_per_second",
+          "packets_per_second",
+          "avg_connection_duration_ms",
+          "unique_protocols",
+          "events_per_minute"
+        ],
+        "per_scenario": {
+          "brute_force": {
+            "samples": 53,
+            "detection_rate": 1.0
+          },
+          "connection_flood": {
+            "samples": 53,
+            "detection_rate": 1.0
+          },
+          "dns_anomaly": {
+            "samples": 53,
+            "detection_rate": 1.0
+          },
+          "normal": {
+            "samples": 525,
+            "false_positive_rate": 0.0305
+          },
+          "port_scan": {
+            "samples": 53,
+            "detection_rate": 1.0
+          },
+          "volume_anomaly": {
+            "samples": 53,
+            "detection_rate": 1.0
+          }
+        },
+        "algorithm": "isolation_forest",
+        "trained_at": "2026-10-03T04:21:44.565723+00:00",
+        "dataset": {
+          "input": 2250,
+          "output": 2250,
+          "dropped_duplicates": 0,
+          "repaired_values": 0,
+          "positive": 750,
+          "negative": 1500,
+          "source": "synthetic",
+          "scenarios": [
+            "port_scan",
+            "brute_force",
+            "connection_flood",
+            "dns_anomaly",
+            "volume_anomaly"
+          ]
+        },
+        "training_samples": 975,
+        "validation_samples": 790,
+        "threshold_percentile": 3.0,
+        "contamination": 0.03,
+        "scenario_detection_rates": {
+          "brute_force": {
+            "samples": 53,
+            "detection_rate": 1.0
+          },
+          "connection_flood": {
+            "samples": 53,
+            "detection_rate": 1.0
+          },
+          "dns_anomaly": {
+            "samples": 53,
+            "detection_rate": 1.0
+          },
+          "normal": {
+            "samples": 525,
+            "false_positive_rate": 0.0305
+          },
+          "port_scan": {
+            "samples": 53,
+            "detection_rate": 1.0
+          },
+          "volume_anomaly": {
+            "samples": 53,
+            "detection_rate": 1.0
+          }
+        }
+      },
+      "path": "baseline_isolation_forest_v1-20261003.joblib",
+      "trained_at": "2026-10-03T04:21:44.565723+00:00",
+      "baseline": true,
+      "dataset_source": "synthetic"
+    },
+    {
+      "name": "baseline_isolation_forest",
+      "version": "v2-20261003",
+      "algorithm": "isolation_forest",
+      "threshold": -0.5687041917126562,
+      "feature_order": [
+        "connection_count",
+        "unique_destination_ports",
+        "unique_destination_ips",
+        "failed_connections",
+        "dns_requests",
+        "unique_dns_queries",
+        "auth_failures",
+        "bytes_total",
+        "packets_total",
+        "bytes_per_second",
+        "packets_per_second",
+        "avg_connection_duration_ms",
+        "unique_protocols",
+        "events_per_minute"
+      ],
+      "metrics": {
+        "threshold": -0.5687041917126562,
+        "samples": 790,
+        "confusion": {
+          "tp": 265,
+          "fp": 16,
+          "tn": 509,
+          "fn": 0
+        },
+        "precision": 0.9431,
+        "recall": 1.0,
+        "f1_score": 0.9707,
+        "false_positive_rate": 0.0305,
+        "false_negative_rate": 0.0,
+        "specificity": 0.9695,
+        "roc_auc": 0.9996,
+        "score_mean_normal": -0.47925,
+        "score_mean_anomaly": -0.66574,
+        "latency": {
+          "mean_ms": 11.0596,
+          "p95_ms": 12.1195,
+          "max_ms": 13.8445,
+          "samples": 200
+        },
+        "feature_order": [
+          "connection_count",
+          "unique_destination_ports",
+          "unique_destination_ips",
+          "failed_connections",
+          "dns_requests",
+          "unique_dns_queries",
+          "auth_failures",
+          "bytes_total",
+          "packets_total",
+          "bytes_per_second",
+          "packets_per_second",
+          "avg_connection_duration_ms",
+          "unique_protocols",
+          "events_per_minute"
+        ],
+        "per_scenario": {
+          "brute_force": {
+            "samples": 53,
+            "detection_rate": 1.0
+          },
+          "connection_flood": {
+            "samples": 53,
+            "detection_rate": 1.0
+          },
+          "dns_anomaly": {
+            "samples": 53,
+            "detection_rate": 1.0
+          },
+          "normal": {
+            "samples": 525,
+            "false_positive_rate": 0.0305
+          },
+          "port_scan": {
+            "samples": 53,
+            "detection_rate": 1.0
+          },
+          "volume_anomaly": {
+            "samples": 53,
+            "detection_rate": 1.0
+          }
+        },
+        "algorithm": "isolation_forest",
+        "trained_at": "2026-10-03T05:02:13.024182+00:00",
+        "dataset": {
+          "input": 2250,
+          "output": 2250,
+          "dropped_duplicates": 0,
+          "repaired_values": 0,
+          "positive": 750,
+          "negative": 1500,
+          "source": "synthetic",
+          "scenarios": [
+            "port_scan",
+            "brute_force",
+            "connection_flood",
+            "dns_anomaly",
+            "volume_anomaly"
+          ]
+        },
+        "training_samples": 975,
+        "validation_samples": 790,
+        "threshold_percentile": 3.0,
+        "contamination": 0.03,
+        "scenario_detection_rates": {
+          "brute_force": {
+            "samples": 53,
+            "detection_rate": 1.0
+          },
+          "connection_flood": {
+            "samples": 53,
+            "detection_rate": 1.0
+          },
+          "dns_anomaly": {
+            "samples": 53,
+            "detection_rate": 1.0
+          },
+          "normal": {
+            "samples": 525,
+            "false_positive_rate": 0.0305
+          },
+          "port_scan": {
+            "samples": 53,
+            "detection_rate": 1.0
+          },
+          "volume_anomaly": {
+            "samples": 53,
+            "detection_rate": 1.0
+          }
+        }
+      },
+      "path": "baseline_isolation_forest_v2-20261003.joblib",
+      "trained_at": "2026-10-03T05:02:13.024182+00:00",
+      "baseline": true,
+      "dataset_source": "synthetic"
+    }
+  ],
+  "active": "baseline_isolation_forest:v2-20261003",
+  "updated_at": "2026-10-03T05:02:13.075464+00:00"
+}

@@ -1,0 +1,27 @@
+# ---------------------------------------------------------------------------
+# Mini SOC detection rules — DNS behaviour
+# ---------------------------------------------------------------------------
+version: 1
+rules:
+  - rule_key: DNS_ANOMALY
+    name: Abnormal DNS activity
+    category: COMMAND_AND_CONTROL
+    rule_type: BEHAVIORAL
+    enabled: true
+    severity_hint: MEDIUM
+    mitre_id: T1071.004
+    window_seconds: 300
+    threshold: 100
+    description: >-
+      DNS behaviour that does not match normal resolution patterns: very high
+      query rates, query names long enough to carry data, or a burst in which
+      almost every name is unique. All three are characteristic of DNS tunnelling
+      or command-and-control beaconing.
+    recommended_action: >-
+      Inspect the queried domains for data exfiltration or DNS tunnelling and
+      block the domain family at the resolver.
+    params:
+      queries: 100
+      unique_query_ratio: 0.8
+      max_query_length: 60
+      score_ceiling: 400

@@ -1,0 +1,53 @@
+# ---------------------------------------------------------------------------
+# Mini SOC — .gitignore
+# ---------------------------------------------------------------------------
+
+# Secrets / local configuration (NEVER commit these)
+.env
+.env.*
+!.env.example
+data/secrets/
+*.pem
+*.key
+
+# Runtime data (database, captured metadata, logs)
+data/*.db
+data/*.sqlite3
+data/*.db-journal
+data/*.db-wal
+data/*.db-shm
+logs/
+*.log
+
+# ML artifacts produced by training runs.  The bundled zero-config baseline and
+# the manifest that points at it are shipped; other models are local only.
+ml/artifacts/*.joblib
+ml/artifacts/*.json
+!ml/artifacts/baseline_*.joblib
+!ml/artifacts/manifest.json
+!ml/artifacts/README.md
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+.pytest_cache/
+.coverage
+htmlcov/
+.mypy_cache/
+.ruff_cache/
+
+# Node / frontend
+node_modules/
+frontend/dist/
+frontend/.vite/
+frontend/coverage/
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp

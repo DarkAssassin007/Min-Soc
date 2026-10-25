@@ -1,0 +1,30 @@
+{
+  "name": "mini-soc-dashboard",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Mini SOC — real-time Security Operations Center dashboard",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "build:api": "vite build --base=/app/",
+    "preview": "vite preview --port 4173",
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "dependencies": {
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-router-dom": "^6.26.2",
+    "recharts": "^2.12.7"
+  },
+  "devDependencies": {
+    "@testing-library/jest-dom": "^6.5.0",
+    "@testing-library/react": "^16.0.1",
+    "@testing-library/user-event": "^14.5.2",
+    "@vitejs/plugin-react": "^4.3.1",
+    "jsdom": "^25.0.1",
+    "vite": "^5.4.8",
+    "vitest": "^2.1.2"
+  }
+}

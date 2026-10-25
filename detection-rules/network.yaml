@@ -1,0 +1,117 @@
+# ---------------------------------------------------------------------------
+# Mini SOC detection rules — network behaviour
+#
+# This file is the *source of truth* for rule configuration. It is loaded into
+# the `detection_rules` table at startup (and reloaded automatically), after
+# which an ADMIN can tune values through /api/v1/rules without editing files.
+#
+# Every rule maps to a rule class in app/detection/rules/builtin.py; thresholds
+# live here, never hard-coded in the detection code.
+# ---------------------------------------------------------------------------
+version: 1
+rules:
+  - rule_key: PORT_SCAN
+    name: Port scan detected
+    category: RECONNAISSANCE
+    rule_type: THRESHOLD
+    enabled: true
+    severity_hint: HIGH
+    mitre_id: T1046
+    window_seconds: 60
+    threshold: 15
+    description: >-
+      A single source touched an unusual number of distinct destination ports on
+      one or more hosts within a short window, which is the signature of host or
+      service discovery scanning.
+    recommended_action: >-
+      Identify the scanning host, confirm whether the scan came from an approved
+      vulnerability scanner or inventory tool, and isolate the source if it did not.
+    params:
+      unique_ports: 15
+      unique_destinations: 1
+      min_connections: 15
+      syn_ratio: 0.5
+      score_ceiling: 80
+
+  - rule_key: CONNECTION_FLOOD
+    name: Connection flood
+    category: AVAILABILITY
+    rule_type: THRESHOLD
+    enabled: true
+    severity_hint: HIGH
+    mitre_id: T1498
+    window_seconds: 60
+    threshold: 60
+    description: >-
+      A source opened an unusually high number of connections in a short window,
+      which can exhaust service resources or indicate automated tooling.
+    recommended_action: >-
+      Rate-limit or block the source, then verify that the destination service is
+      still responsive.
+    params:
+      connections: 60
+      events_per_minute: 120
+      score_ceiling: 300
+
+  - rule_key: FAILED_CONNECTIONS
+    name: Repeated failed connections
+    category: ANOMALOUS_CONNECTION
+    rule_type: THRESHOLD
+    enabled: true
+    severity_hint: MEDIUM
+    mitre_id: T1046
+    window_seconds: 300
+    threshold: 10
+    description: >-
+      A source repeatedly failed to establish connections (refused, reset or
+      timed out), which usually means scanning of closed ports, a broken client,
+      or a misconfigured service.
+    recommended_action: >-
+      Check whether the destination service is reachable, then investigate the
+      source host for malware or misconfiguration.
+    params:
+      failures: 10
+      min_failure_ratio: 0.5
+      score_ceiling: 40
+
+  - rule_key: SUSPICIOUS_PROTOCOL
+    name: Suspicious protocol activity
+    category: POLICY
+    rule_type: PATTERN
+    enabled: true
+    severity_hint: MEDIUM
+    mitre_id: T1021
+    window_seconds: 60
+    threshold: 1
+    description: >-
+      Protocol and port combinations that should not normally cross the perimeter
+      (legacy remote-access services, large ICMP payloads, DNS port without a DNS
+      question), each of which is a common tunnelling or lateral-movement channel.
+    recommended_action: >-
+      Validate the business need for the protocol/port pair and block it at the
+      perimeter if it is not required.
+    params:
+      suspicious_ports: [23, 135, 139, 445, 1433, 3389, 5900, 6667, 31337]
+      dns_ports: [53]
+      large_icmp_bytes: 4096
+      external_only: true
+
+  - rule_key: VOLUME_ANOMALY
+    name: Unusual traffic volume
+    category: EXFILTRATION
+    rule_type: THRESHOLD
+    enabled: true
+    severity_hint: MEDIUM
+    mitre_id: T1048
+    window_seconds: 300
+    threshold: 50000000
+    description: >-
+      A host transferred far more data than its normal baseline, which is what
+      large uploads, backups and data theft all look like at the network layer.
+    recommended_action: >-
+      Confirm the transfer is expected (backup, update, streaming). If it is not,
+      treat it as possible exfiltration and preserve the flow records.
+    params:
+      bytes_total: 50000000
+      bytes_per_second: 500000
+      score_ceiling: 500000000

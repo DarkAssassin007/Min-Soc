@@ -1,0 +1,25 @@
+# ---------------------------------------------------------------------------
+# Mini SOC detection rules — authentication and host security events
+# ---------------------------------------------------------------------------
+version: 1
+rules:
+  - rule_key: BRUTE_FORCE
+    name: Brute force authentication attack
+    category: CREDENTIAL_ACCESS
+    rule_type: THRESHOLD
+    enabled: true
+    severity_hint: HIGH
+    mitre_id: T1110
+    window_seconds: 300
+    threshold: 5
+    description: >-
+      Multiple authentication failures from one source inside the window. The
+      count is taken from the stored events (not just the live stream), so a slow
+      password-spraying attempt spread over several minutes is still detected.
+    recommended_action: >-
+      Check the targeted account for lockout, force a password reset, block the
+      source address and review the authentication log around the window.
+    params:
+      failures: 5
+      count_from_database: true
+      score_ceiling: 20

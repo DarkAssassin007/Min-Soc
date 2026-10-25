@@ -1,0 +1,82 @@
+# Mini SOC - production-style container stack (spec section 31).
+#
+#   dashboard (nginx :8080)  ->  backend (uvicorn :8000)  ->  SQLite (/data)
+#
+# Quick start:
+#   1. copy .env.example to .env and set MINI_SOC_JWT_SECRET and
+#      MINI_SOC_ADMIN_PASSWORD (both are required by this file)
+#   2. docker compose up --build
+#   3. open http://localhost:8080  (API docs: http://localhost:8000/docs)
+#
+# For a larger deployment, start the bundled PostgreSQL profile and point the
+# backend at it:
+#   docker compose --profile postgres up --build
+#   MINI_SOC_DATABASE_URL=postgresql+psycopg://mini_soc:CHANGE_ME@postgres:5432/mini_soc
+name: mini-soc
+
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    image: mini-soc-backend:1.0.0
+    environment:
+      MINI_SOC_HOME: /data
+      MINI_SOC_ENV: production
+      MINI_SOC_DATABASE_URL: ${MINI_SOC_DATABASE_URL:-sqlite+pysqlite:////data/mini_soc.db}
+      MINI_SOC_JWT_SECRET: ${MINI_SOC_JWT_SECRET:?set MINI_SOC_JWT_SECRET in .env}
+      MINI_SOC_ADMIN_USERNAME: ${MINI_SOC_ADMIN_USERNAME:-admin}
+      MINI_SOC_ADMIN_PASSWORD: ${MINI_SOC_ADMIN_PASSWORD:?set MINI_SOC_ADMIN_PASSWORD in .env}
+      # Containers cannot see host interfaces by default; collect via syslog,
+      # the API or the authorized-lab simulator instead.
+      MINI_SOC_COLLECTOR_NETWORK_ENABLED: "false"
+      MINI_SOC_SIMULATOR_ENABLED: ${MINI_SOC_SIMULATOR_ENABLED:-false}
+      MINI_SOC_SECURE_HEADERS: "true"
+      MINI_SOC_TRUSTED_HOSTS: ${MINI_SOC_TRUSTED_HOSTS:-localhost,127.0.0.1,backend}
+    volumes:
+      - mini-soc-data:/data
+    ports:
+      - "8000:8000"
+    restart: unless-stopped
+    healthcheck:
+      test:
+        - CMD
+        - python
+        - -c
+        - "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/api/v1/system/health')"
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 20s
+
+  dashboard:
+    build:
+      context: .
+      dockerfile: frontend/Dockerfile
+    image: mini-soc-dashboard:1.0.0
+    ports:
+      - "8080:80"
+    depends_on:
+      - backend
+    restart: unless-stopped
+
+  # Optional PostgreSQL for deployments beyond SQLite's single-writer limits.
+  # Enable with: docker compose --profile postgres up
+  postgres:
+    image: postgres:16-alpine
+    profiles: ["postgres"]
+    environment:
+      POSTGRES_DB: mini_soc
+      POSTGRES_USER: mini_soc
+      POSTGRES_PASSWORD: ${MINI_SOC_POSTGRES_PASSWORD:?set MINI_SOC_POSTGRES_PASSWORD in .env}
+    volumes:
+      - mini-soc-postgres:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U mini_soc -d mini_soc"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  mini-soc-data:
+  mini-soc-postgres:

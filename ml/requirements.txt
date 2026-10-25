@@ -1,0 +1,6 @@
+# ML training pipeline dependencies (deployed inference only needs
+# scikit-learn + numpy + joblib from backend/requirements.txt)
+scikit-learn>=1.4
+numpy>=1.26
+pandas>=2.2
+joblib>=1.3
